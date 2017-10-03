@@ -12,9 +12,23 @@ app.locals.pretty=true; //html코드 명확하게 보이게 해주는거!
 app.set('views', './views_file');
 app.set('view engine','pug');
 
-app.get('/topic/new', function(req,res){
-  res.render('new');
+
+app.get('/topic', function(req,res){
+
+  fs.readdir('data',function(err,files){
+    if(err)
+    { console.log(err);
+      res.status(500).send('Interneal Server Error');
+    }
+    res.render('view',{topics:files}); //template사용
+  });
+
 });
+app.get('/topic/new', function(req,res){
+  res.render('new'); //template사용
+});
+
+
 
 
 app.post('/topic',function(req,res){ //post로 정보를 받아옴!!
