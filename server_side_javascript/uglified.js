@@ -1,0 +1,1 @@
+function hello(l){console.lof("Hello World"+l)}hello("yg");
