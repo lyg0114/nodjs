@@ -1,7 +1,7 @@
 
 var express = require('express'); //nod_modules 에 있는 express모듈을 불러옴!!
 var bodyParser = require('body-parser'); //post로 받게해주는 모듈
-var fs = require('fs'); //file처리를 위한 모듈
+var fs = require('fs'); //file처리를 위한 모듈 pug에서 지원해주는거!
 var app = express(); //application객체를 return
 app.listen(4000, function(){
   console.log('Connected, 4000 port!');
@@ -28,8 +28,22 @@ app.get('/topic/new', function(req,res){
   res.render('new'); //template사용
 });
 
-
-
+app.get('/topic/:id',function(req,res){ //데이터 출력
+  var id = req.params.id;
+  fs.readdir('data',function(err,files){
+    if(err){
+       console.log(err);
+       res.status(500).send('Interneal Server Error');
+    }
+    fs.readFile('data/'+id,'utf8',function(err,data){
+      if(err)
+      { console.log(err);
+        res.status(500).send('Interneal Server Error');
+      }
+      res.render('view',{topics:files, title:id, description:data});
+      });
+    });
+  });
 
 app.post('/topic',function(req,res){ //post로 정보를 받아옴!!
   var title = req.body.title;
